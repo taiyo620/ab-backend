@@ -1,0 +1,102 @@
+{% extends "webaccountbookapi/base.html" %}
+{% load static %}
+
+{% block title %}タイトル！{% endblock %}
+
+{% block header_image %}
+<h1>いい感じのヒーロー画像</h1>
+{% endblock %}
+{% block content %}
+
+{% if message %}
+<p class="message">{{ message }}</p>
+{% endif %}
+<div class="monthly_analyze">
+  <h2><span class="under_line">{{ this_month }}<span class="small">の</span>家計</span></h2>
+  <img src="{{ graph.graph.url }}" alt="エラー">
+  {{graph.graph.name}}
+  <div class="list">
+    <table>
+      <tr>
+        <th>名前</th>
+        <th>ジャンル</th>
+        <th>価格</th>
+        <th>購入日</th>
+      </tr>
+      {% for purchase in this_month_purchase_list %}
+        <tr>
+          <td>{{purchase.name}}</td>
+          <td>{{purchase.genre}}</td>
+          <td>{{purchase.price}}<span class="small">円</span></td>
+          <td>{{purchase.purchase_date.month}} / {{purchase.purchase_date.day}}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <p class="sum_price"><b>総計<span class="space"></span>{{sum_price}}<span class="small">円</span></b></p>
+</div>
+
+<div class="register_purchase">
+  <h2><span class="under_line">家計簿<span class="small">に</span>記入</span></h2>
+  <form action="{% url 'webaccountbookapi:add_purchase' %}" method="post">
+    {% csrf_token %}
+    <div class="form_content">
+      {% for field in purchase_form %}
+        <div class="form_part">
+          <p>{{ field.label_tag }}</p>
+          {{ field }}
+        </div>
+      {% endfor %}
+    </div>
+    <input type="submit" value="登録" class="register_button">
+  </form>
+</div>
+
+<div class="register_genre">
+  <h2><span class="under_line">ジャンル<span class="small">を</span>編集</span></h2>
+  <form action="{% url 'webaccountbookapi:add_genre' %}" method="post">
+    {% csrf_token %}
+    <div class="form_content">
+      {% for field in genre_form %}
+        <div class="form_part">
+          <p>{{ field.label_tag }}</p>
+          {{ field }}
+        </div>
+      {% endfor %}
+    </div>
+    <input type="submit" value="登録" class="register_button">
+  </form>
+  <hr>
+
+  <div class="list">
+      <ul>
+      {% for genre in genre_list %}
+        <li>
+          {{genre.genre_name}}
+          <a href="{% url 'webaccountbookapi:delete_genre' genre.id %}"><button>削除</button></a>
+        </li>
+      {% endfor %}
+      </ul>
+  </div>
+</div>
+
+<div class="recent_list">
+  <h2><span class="under_line">最近の入力</span></h2>
+    <table>
+      <tr>
+        <th>名前</th>
+        <th>ジャンル</th>
+        <th>価格</th>
+        <th>購入日</th>
+      </tr>
+      {% for purchase in purchase_list %}
+        <tr>
+          <th>{{purchase.name}}</th>
+          <th>{{purchase.genre}}</th>
+          <th>{{purchase.price}}</th>
+          <th>{{purchase.purchase_date}}</th>
+        </tr>
+      {% endfor %}
+    </table>
+
+{% endblock %}

@@ -1,0 +1,127 @@
+$main-color: #2dedc7;
+$accent-color: #EF2D56;
+$char-color: #363537;
+$white-color: #fefefe;
+
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body{
+  background-color: $main-color;
+  color: $char-color;
+  font-family: 'M PLUS 1p', sans-serif;
+  font-size: 20px;
+  .small{
+    font-size: 15px;
+  }
+}
+
+header{
+  background-color: $white-color;
+  border-bottom: solid 1px #bbb;
+}
+
+div{
+  margin: calc(1.5%);
+  background-color: $white-color;
+  border-radius: 5px;
+}
+
+h2{
+  margin: 10px;
+  color: $accent-color;
+  .small{
+    font-size: 23px;
+  }
+}
+
+a{
+  color : $accent-color;
+  text-decoration: none;
+  &:visited{
+    color : $accent-color;
+  }
+}
+
+ul{
+  margin-top: 0px;
+  list-style: none;
+}
+
+nav li{
+  display: inline-block;
+  border-left: solid 1px #bbb;
+}
+
+.under_line{
+  border-bottom: solid 3px $main-color;
+}
+
+.logo{
+  float: left;
+}
+
+
+
+.register_purchase{
+  width: calc(55%);
+  float: left;
+}
+
+.register_genre{
+  width: calc(39%);
+  float: right;
+}
+
+.form_part{
+  display: inline-block;
+  p{
+    text-align: center;
+  }
+}
+
+.register_button{
+  border-radius: 100px;
+  background-color: $accent-color;
+  border: solid 1px $white-color;
+  color: $white-color;
+  display: block;
+  font-family: 'M PLUS 1p', sans-serif;
+  font-size: 20px;
+  margin: 20px auto;
+  padding: 30px;
+}
+
+.recent_list{
+  clear: both;
+}
+
+.form_content{
+  text-align: center;
+}
+
+.list{
+  width: calc(40%);
+  border-bottom: solid 1px #bbb;
+}
+
+th,td{
+  padding-right: 10px;
+}
+
+.sum_price{
+  padding-left: 60px;
+  .space{
+    display: inline-block;
+    padding-right: 145px;
+  }
+}
+
+.message{
+  margin-top: 20px;
+  background-color: $accent-color;
+  color: $white-color;
+}

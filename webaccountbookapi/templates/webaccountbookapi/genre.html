@@ -1,0 +1,25 @@
+{% extends 'webaccountbookapi/base.html' %}
+
+{% block title %}タイトル！{% endblock %}
+
+{% block content %}
+  <div class="register_genre">
+    <form action="{% url 'webaccountbookapi:add_genre' %}" method="post">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="登録">
+    </form>
+  </div>
+
+  <div class="list">
+      <ul>
+      {% for genre in genre_list %}
+        <li>
+          {{genre.genre_name}}
+          <a href="{% url 'webaccountbookapi:delete_genre' forloop.counter %}"><button>削除</button></a>
+        </li>
+      {% endfor %}
+      </ul>
+  </div>
+
+{% endblock %}

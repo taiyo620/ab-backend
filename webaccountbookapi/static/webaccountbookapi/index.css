@@ -1,0 +1,96 @@
+* {
+  margin: 0px;
+  padding: 0px; }
+
+body {
+  background-color: #2dedc7;
+  color: #363537;
+  font-family: 'M PLUS 1p', sans-serif;
+  font-size: 20px; }
+  body .small {
+    font-size: 15px; }
+
+header {
+  background-color: #fefefe;
+  border-bottom: solid 1px #bbb; }
+
+div {
+  margin: calc(1.5%);
+  background-color: #fefefe;
+  border-radius: 5px; }
+
+h2 {
+  margin: 10px;
+  color: #EF2D56; }
+  h2 .small {
+    font-size: 23px; }
+
+a {
+  color: #EF2D56;
+  text-decoration: none; }
+  a:visited {
+    color: #EF2D56; }
+
+ul {
+  margin-top: 0px;
+  list-style: none; }
+
+nav li {
+  display: inline-block;
+  border-left: solid 1px #bbb; }
+
+.under_line {
+  border-bottom: solid 3px #2dedc7; }
+
+.logo {
+  float: left; }
+
+.register_purchase {
+  width: calc(55%);
+  float: left; }
+
+.register_genre {
+  width: calc(39%);
+  float: right; }
+
+.form_part {
+  display: inline-block; }
+  .form_part p {
+    text-align: center; }
+
+.register_button {
+  border-radius: 100px;
+  background-color: #EF2D56;
+  border: solid 1px #fefefe;
+  color: #fefefe;
+  display: block;
+  font-family: 'M PLUS 1p', sans-serif;
+  font-size: 20px;
+  margin: 20px auto;
+  padding: 30px; }
+
+.recent_list {
+  clear: both; }
+
+.form_content {
+  text-align: center; }
+
+.list {
+  width: calc(40%);
+  border-bottom: solid 1px #bbb; }
+
+th, td {
+  padding-right: 10px; }
+
+.sum_price {
+  padding-left: 60px; }
+  .sum_price .space {
+    display: inline-block;
+    padding-right: 145px; }
+
+.message {
+  margin-top: 20px;
+  background-color: #EF2D56;
+  color: #fefefe; }
+
+/*# sourceMappingURL=index.css.map */
