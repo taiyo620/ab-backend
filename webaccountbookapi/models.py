@@ -19,7 +19,6 @@ class User(models.Model):
         return self.user_name
 
 class Purchase(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     genre = models.ForeignKey(Genre,on_delete=models.CASCADE)
     price = models.IntegerField(default=0)
