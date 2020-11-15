@@ -11,8 +11,12 @@ body {
     font-size: 15px; }
 
 header {
+  height: 60px;
   background-color: #fefefe;
   border-bottom: solid 1px #bbb; }
+  header #rightparts {
+    margin: 0px;
+    float: right; }
 
 div {
   margin: calc(1.5%);
@@ -75,9 +79,13 @@ nav li {
 .form_content {
   text-align: center; }
 
-.list {
+#monthly_analyze img {
+  width: 40%; }
+
+#monthly_list {
   width: calc(40%);
-  border-bottom: solid 1px #bbb; }
+  border-bottom: solid 1px #bbb;
+  float: right; }
 
 th, td {
   padding-right: 10px; }

@@ -3,19 +3,33 @@
 
 {% block title %}タイトル！{% endblock %}
 
-{% block header_image %}
-<h1>いい感じのヒーロー画像</h1>
-{% endblock %}
 {% block content %}
+<header>
+  <div id="rightparts">
+    <p>ようこそ{{ user }}さん</p>
+    <p><a href="{% url 'webaccountbookapi:logout' %}">ログアウト</a></p>
+  </div>
+  <a class="logo" href="{% url 'webaccountbookapi:index'  %}">いい感じのロゴ(固定しない)</a>
+  <nav>
+    <ul>
+      <li>ナビ</li>
+      <li>ゲー</li>
+      <li>ション</li>
+    </ul>
+  </nav>
+</header>
 
 {% if message %}
 <p class="message">{{ message }}</p>
 {% endif %}
-<div class="monthly_analyze">
+<div id="monthly_analyze">
   <h2><span class="under_line">{{ this_month }}<span class="small">の</span>家計</span></h2>
-  <img src="{{ graph.graph.url }}" alt="エラー">
-  {{graph.graph.name}}
-  <div class="list">
+  {% if graph %}
+    <img src="{{ graph.graph.url }}">
+  {% else %}
+    <p>まだ家計がありません</p>
+  {% endif %}
+  <div id="monthly_list">
     <table>
       <tr>
         <th>名前</th>
@@ -32,8 +46,8 @@
         </tr>
       {% endfor %}
     </table>
+      <p class="sum_price"><b>総計<span class="space"></span>{{sum_price}}<span class="small">円</span></b></p>
   </div>
-  <p class="sum_price"><b>総計<span class="space"></span>{{sum_price}}<span class="small">円</span></b></p>
 </div>
 
 <div class="register_purchase">

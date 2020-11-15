@@ -8,20 +8,8 @@
     <link rel="stylesheet" href="{% static 'webaccountbookapi/index.css' %}">
   </head>
   <body>
-    <header>
-      <a class="logo" href="{% url 'webaccountbookapi:index'  %}">いい感じのロゴ(固定しない)</a>
-      <nav>
-        <ul>
-          <li>ナビ</li>
-          <li>ゲー</li>
-          <li>ション</li>
-        </ul>
-      </nav>
-
-      {% block header_image %}
-      {% endblock %}
-    </header>
     {% block content %}
     {% endblock %}
+    <footer>©taiyo narumi</footer>
   </body>
 </html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>ウェブカケ　新規登録</title>
+  </head>
+  <body>
+    <form action="{% url 'webaccountbookapi:create' %}" method="post">
+      {% csrf_token %}
+      {{form}}
+      <input type="submit" value='登録'>
+  </body>
+</html>

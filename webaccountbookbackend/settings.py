@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'webaccountbookbackend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'account_book',
+        'NAME': 'web_account_book',
         'USER': 'root',
         'PASSWORD': 'Like16candles',
         'HOST': 'localhost',
@@ -124,6 +124,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+LOGIN_URL = '/account_book/login/'
+LOGIN_REDIRECT_URL = '/account_book/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

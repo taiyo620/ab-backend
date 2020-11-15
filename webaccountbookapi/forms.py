@@ -1,7 +1,9 @@
 from django import forms
 from django.utils import timezone
 
-from .models import Purchase,Genre,User
+from .models import Purchase,Genre
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 class PurchaseForm(forms.ModelForm):
     class Meta:
@@ -18,6 +20,8 @@ class PurchaseForm(forms.ModelForm):
         }
         label_suffix = ''
 
+
+
 class GenreForm(forms.ModelForm):
     class Meta:
         model = Genre
@@ -26,10 +30,7 @@ class GenreForm(forms.ModelForm):
             'genre_name':"ジャンル名"
         }
 
-class UserForm(forms.ModelForm):
+class SignUpForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['user_name',]
-        labels = {
-            'user_name':'名前を入力してログイン'
-        }
+        fields = ('username','password1')
