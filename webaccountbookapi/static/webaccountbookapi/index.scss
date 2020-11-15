@@ -110,13 +110,25 @@ nav li{
 
 #monthly_analyze{
   img{
-    width: 40%
+    width: calc(40%);
   }
+  overflow: auto;
 }
 
 #monthly_list{
   width: calc(40%);
   border-bottom: solid 1px #bbb;
+  table{
+    width: calc(80%);
+    margin: 0 auto;
+  }
+  .sum_price{
+    padding-left: calc(15%);
+    .space{
+      display: inline-block;
+      padding-right: calc(35%);
+    }
+  }
   float:right;
 }
 
@@ -124,16 +136,13 @@ th,td{
   padding-right: 10px;
 }
 
-.sum_price{
-  padding-left: 60px;
-  .space{
-    display: inline-block;
-    padding-right: 145px;
-  }
-}
+
 
 .message{
   margin-top: 20px;
   background-color: $accent-color;
+  color: $white-color;
+}
+footer{
   color: $white-color;
 }

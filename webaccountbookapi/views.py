@@ -65,8 +65,9 @@ def index(request):
     }
     if this_month_purchase_list:
         this_month_purchase_df = read_frame(this_month_purchase_list)
-        genre_proportion = this_month_purchase_df.groupby(by="genre").sum()
-        genre_proportion['price'].plot(fontsize=13,ylabel="",kind="pie",startangle=90,counterclock=True,textprops=None)
+        genre_proportion = this_month_purchase_df.groupby(by="genre").sum().sort_values("price",ascending=False)
+        colors = ["#2dedc7","#B3FB30","#EF2D56","#FF8230","#0EA486","#7CBD03","#A50D2E","#C64C00"]
+        genre_proportion['price'].plot(fontsize=13,ylabel="",kind="pie",startangle=90,wedgeprops={'linewidth':3,'edgecolor':'white'},counterclock=False,colors=colors)
         plt.title("")
         file_name = "graph" + user.username + ".jpg"
         image_url = os.path.join(settings.MEDIA_ROOT,file_name)

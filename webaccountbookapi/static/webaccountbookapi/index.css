@@ -79,26 +79,33 @@ nav li {
 .form_content {
   text-align: center; }
 
-#monthly_analyze img {
-  width: 40%; }
+#monthly_analyze {
+  overflow: auto; }
+  #monthly_analyze img {
+    width: calc(40%); }
 
 #monthly_list {
   width: calc(40%);
   border-bottom: solid 1px #bbb;
   float: right; }
+  #monthly_list table {
+    width: calc(80%);
+    margin: 0 auto; }
+  #monthly_list .sum_price {
+    padding-left: calc(15%); }
+    #monthly_list .sum_price .space {
+      display: inline-block;
+      padding-right: calc(35%); }
 
 th, td {
   padding-right: 10px; }
 
-.sum_price {
-  padding-left: 60px; }
-  .sum_price .space {
-    display: inline-block;
-    padding-right: 145px; }
-
 .message {
   margin-top: 20px;
   background-color: #EF2D56;
+  color: #fefefe; }
+
+footer {
   color: #fefefe; }
 
 /*# sourceMappingURL=index.css.map */
