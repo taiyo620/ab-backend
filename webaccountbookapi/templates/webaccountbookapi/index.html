@@ -46,7 +46,25 @@
         </tr>
       {% endfor %}
     </table>
-      <p class="sum_price"><b>総計<span class="space"></span>{{sum_price}}<span class="small">円</span></b></p>
+    <br>
+    <table>
+      <tr>
+        <td><b>総計</b></td>
+        <td><b>{{sum_price}}</b><span class="small">円</span></td>
+      </tr>
+      <tr>
+        <td><b>今月残り</b></td>
+        <td><b>{{rest_budget}}</b><span class="small">円</span></td>
+      </tr>
+    </table>
+
+      <p class="sum_price"><span class="space"></span></p>
+      <p><span class="space"></span></p>
+      <form action="{% url 'webaccountbookapi:update_budget' %}" method="post">
+        {% csrf_token %}
+        {{site_user_form}}
+        <input type="submit" value="更新">
+      </form>
   </div>
 </div>
 

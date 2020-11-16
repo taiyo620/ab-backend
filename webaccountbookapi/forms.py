@@ -1,7 +1,7 @@
 from django import forms
 from django.utils import timezone
 
-from .models import Purchase,Genre
+from .models import Purchase,Genre,Siteuser
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -20,6 +20,13 @@ class PurchaseForm(forms.ModelForm):
         }
         label_suffix = ''
 
+class SiteuserForm(forms.ModelForm):
+    class Meta:
+        model = Siteuser
+        fields = ['monthly_budget']
+        labels = {
+        'monthly_budget':'今月の予算',
+        }
 
 
 class GenreForm(forms.ModelForm):

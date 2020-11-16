@@ -12,5 +12,6 @@ urlpatterns = [
     path('add_purchase/',views.add_purchase,name="add_purchase"),
     path('<int:purchase_id>/delete',views.delete_purchase,name="delete_purchase"),
     path('genre/add/',views.add_genre,name="add_genre"),
+    path('update_budget/',views.update_budget,name="update_budget"),
     path('genre/<int:genre_id>/delete/',views.delete_genre,name="delete_genre"),
 ]

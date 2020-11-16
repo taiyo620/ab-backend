@@ -1,17 +1,13 @@
 from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse,reverse_lazy
 from django.shortcuts import render,get_object_or_404
-from django.conf import settings
-from django.core.files import File
 from django.views.generic.edit import CreateView
-
-from .forms import PurchaseForm,GenreForm,SignUpForm
-from .models import Purchase,Genre,Graphs
 from django.utils import timezone
+
+from .forms import PurchaseForm,GenreForm,SignUpForm,SiteuserForm
+from .models import Purchase,Genre,Siteuser
+from .graphs import make_pi
 from django_pandas.io import read_frame
-from django.db import connection
-import matplotlib.pyplot as plt
-import japanize_matplotlib
 import os
 
 from django.contrib.auth import login,logout
@@ -26,32 +22,26 @@ locale.setlocale(locale.LC_ALL, '')
 # Create your views here.
 @login_required
 def index(request):
-    user = User.objects.get(username=str(request.user))
+    user = request.user
+    monthly_budget = user.siteuser.monthly_budget
+
+    if not Genre.objects.filter(author=user):
+        for default_genre in ['食費','交通費','交際費','被服費','雑貨費']:
+            Genre.objects.create(author=user,genre_name=default_genre)
     genre_list = Genre.objects.filter(author=user)
-    if not genre_list:
-        Genre.objects.create(author=user,genre_name="食費")
-        Genre.objects.create(author=user,genre_name="交通費")
-        Genre.objects.create(author=user,genre_name="被服費")
-        Genre.objects.create(author=user,genre_name="交際費")
-        Genre.objects.create(author=user,genre_name="雑貨費")
-        genre_list = Genre.objects.filter(author=user)
 
     purchase_list = Purchase.objects.filter(author=user.id)
     purchase_form = PurchaseForm(label_suffix='')
     purchase_form.fields['genre'].queryset = genre_list
     genre_form = GenreForm(label_suffix='')
-
+    site_user_form = SiteuserForm(instance=user.siteuser)
 
     now = timezone.now()
     this_month_purchase_list = purchase_list.filter(purchase_date__year=now.year).filter(purchase_date__month=now.month)
     this_month_purchase_list = this_month_purchase_list.order_by('purchase_date')
     sum_price = sum([purchase.price for purchase in this_month_purchase_list])
-
-    Graphs.objects.all().delete()
-    with connection.cursor() as cursor:
-        cursor.execute('alter table webaccountbookapi_graphs auto_increment = 1')
-
     message = request.session.get('message','')
+
 
     params = {
     "purchase_list": purchase_list,
@@ -62,27 +52,27 @@ def index(request):
     "this_month_purchase_list": this_month_purchase_list,
     "sum_price": sum_price,
     "message": message,
+    "site_user_form": site_user_form,
+    "rest_budget": monthly_budget - sum_price,
     }
     if this_month_purchase_list:
         this_month_purchase_df = read_frame(this_month_purchase_list)
         genre_proportion = this_month_purchase_df.groupby(by="genre").sum().sort_values("price",ascending=False)
-        colors = ["#2dedc7","#B3FB30","#EF2D56","#FF8230","#0EA486","#7CBD03","#A50D2E","#C64C00"]
-        genre_proportion['price'].plot(fontsize=13,ylabel="",kind="pie",startangle=90,wedgeprops={'linewidth':3,'edgecolor':'white'},counterclock=False,colors=colors)
-        plt.title("")
         file_name = "graph" + user.username + ".jpg"
-        image_url = os.path.join(settings.MEDIA_ROOT,file_name)
-
-        plt.savefig(image_url)
-        pi_graph = Graphs()
-        im = open(image_url,"rb")
-        pi_graph.graph.save(file_name,im,save=True)
-        im.close()
-        plt.clf()
-        plt.close()
-
-        params['graph'] = pi_graph
+        params['graph'] = make_pi(genre_proportion["price"],file_name)
 
     return render(request,"webaccountbookapi/index.html",params)
+
+@login_required
+def update_budget(request):
+    user = request.user
+    if request.method == "POST":
+        form = SiteuserForm(request.POST)
+        if form.is_valid():
+            monthly_budget = form.cleaned_data['monthly_budget']
+        user.siteuser.monthly_budget = monthly_budget
+        user.siteuser.save()
+    return HttpResponseRedirect(reverse('webaccountbookapi:index'))
 
 
 def add_purchase(request):
