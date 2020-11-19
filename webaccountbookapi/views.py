@@ -4,15 +4,14 @@ from django.shortcuts import render,get_object_or_404
 from django.views.generic.edit import CreateView
 from django.utils import timezone
 
-from .forms import PurchaseForm,GenreForm,SignUpForm,SiteuserForm
-from .models import Purchase,Genre,Siteuser
+from .forms import PurchaseForm,GenreForm,SignUpForm,SiteuserForm,AuthenticationFormWithoutPassword
+from .models import Purchase,Genre,Siteuser,NameOnlyUser
 from .graphs import make_pi
 from django_pandas.io import read_frame
 import os
 
 from django.contrib.auth import login,logout
 from django.contrib.auth.views import LoginView
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 import locale
@@ -25,20 +24,18 @@ def index(request):
     user = request.user
     monthly_budget = user.siteuser.monthly_budget
 
-    if not Genre.objects.filter(author=user):
+    if not Genre.objects.bind_user(user):
         for default_genre in ['食費','交通費','交際費','被服費','雑貨費']:
             Genre.objects.create(author=user,genre_name=default_genre)
-    genre_list = Genre.objects.filter(author=user)
+    genre_list = Genre.objects.bind_user(user)
 
-    purchase_list = Purchase.objects.filter(author=user.id)
+    purchase_list = Purchase.objects.bind_user(user)
     purchase_form = PurchaseForm(label_suffix='')
     purchase_form.fields['genre'].queryset = genre_list
     genre_form = GenreForm(label_suffix='')
     site_user_form = SiteuserForm(instance=user.siteuser)
 
-    now = timezone.now()
-    this_month_purchase_list = purchase_list.filter(purchase_date__year=now.year).filter(purchase_date__month=now.month)
-    this_month_purchase_list = this_month_purchase_list.order_by('purchase_date')
+    this_month_purchase_list = purchase_list.thismonth()
     sum_price = sum([purchase.price for purchase in this_month_purchase_list])
     message = request.session.get('message','')
 
@@ -48,7 +45,7 @@ def index(request):
     "purchase_form": purchase_form,
     "genre_form": genre_form,
     "genre_list": genre_list,
-    "this_month": now.strftime("%Y年%m月"),
+    "this_month": timezone.now().strftime("%Y年%m月"),
     "this_month_purchase_list": this_month_purchase_list,
     "sum_price": sum_price,
     "message": message,
@@ -76,7 +73,7 @@ def update_budget(request):
 
 
 def add_purchase(request):
-    user = User.objects.get(username=str(request.user))
+    user = request.user
     if request.method == 'POST':
         form = PurchaseForm(request.POST)
         if form.is_valid():
@@ -91,6 +88,7 @@ def add_purchase(request):
 
     return HttpResponseRedirect(reverse('webaccountbookapi:index'))
 
+
 def delete_purchase(request,purchase_id):
     del_purchse = get_object_or_404(Purchase,pk=purchase_id)
     request.session['message'] = f'{del_genre.name}を削除しました'
@@ -98,8 +96,9 @@ def delete_purchase(request,purchase_id):
 
     return HttpResponseRedirect(reverse('webaccountbookapi:index'))
 
+
 def add_genre(request):
-    user = User.objects.get(username=str(request.user))
+    user = request.user
     if request.method == 'POST':
         form = GenreForm(request.POST)
         if form.is_valid():
@@ -119,6 +118,7 @@ def delete_genre(request,genre_id):
 
     return HttpResponseRedirect(reverse('webaccountbookapi:index'))
 
+
 class SignUp(CreateView):
     form_class = SignUpForm
     template_name = 'webaccountbookapi/create.html'
@@ -126,13 +126,21 @@ class SignUp(CreateView):
 
     def form_valid(self,form):
         user = form.save()
-        login(self.request,user)
+        login(self.request,user,backend='webaccountbookapi.backends.MyBackend')
         self.object = user
         return HttpResponseRedirect(self.get_success_url())
 
+
 class login_to_index(LoginView):
+    form_class = AuthenticationFormWithoutPassword
     template_name='webaccountbookapi/login.html'
     redirect_field_name = 'webaccountbookapi:index'
+
+    def form_valid(self, form):
+        username = form.cleaned_data['username']
+        login(self.request, NameOnlyUser.objects.get(username=username),backend='webaccountbookapi.backends.MyBackend')
+        return HttpResponseRedirect(self.get_success_url())
+
 
 def logout_view(request):
     logout(request)

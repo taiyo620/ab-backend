@@ -87,7 +87,7 @@ DATABASES = {
 }
 
 
-AUTH_USER_MODEL = 'auth.User'
+AUTH_USER_MODEL = 'webaccountbookapi.NameOnlyUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -107,6 +107,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'webaccountbookapi.backends.MyBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

@@ -1,7 +1,7 @@
 {% extends "webaccountbookapi/base.html" %}
 {% load static %}
 
-{% block title %}タイトル！{% endblock %}
+{% block title %}ウェブカケ{% endblock %}
 
 {% block content %}
 <header>
@@ -82,6 +82,26 @@
     </div>
     <input type="submit" value="登録" class="register_button">
   </form>
+  <hr>
+  <div class="recent_list">
+    <h3>最近の入力</h3>
+      <table>
+        <tr>
+          <th>名前</th>
+          <th>ジャンル</th>
+          <th>価格</th>
+          <th>購入日</th>
+        </tr>
+        {% for purchase in purchase_list %}
+          <tr>
+            <th>{{purchase.name}}</th>
+            <th>{{purchase.genre}}</th>
+            <th>{{purchase.price}}</th>
+            <th>{{purchase.purchase_date}}</th>
+          </tr>
+        {% endfor %}
+      </table>
+  </div>
 </div>
 
 <div class="register_genre">
@@ -110,26 +130,6 @@
       {% endfor %}
       </ul>
   </div>
-</div>
-
-<div class="recent_list">
-  <h2><span class="under_line">最近の入力</span></h2>
-    <table>
-      <tr>
-        <th>名前</th>
-        <th>ジャンル</th>
-        <th>価格</th>
-        <th>購入日</th>
-      </tr>
-      {% for purchase in purchase_list %}
-        <tr>
-          <th>{{purchase.name}}</th>
-          <th>{{purchase.genre}}</th>
-          <th>{{purchase.price}}</th>
-          <th>{{purchase.purchase_date}}</th>
-        </tr>
-      {% endfor %}
-    </table>
 </div>
 
 {% endblock %}

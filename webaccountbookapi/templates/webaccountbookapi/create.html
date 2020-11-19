@@ -5,9 +5,12 @@
     <title>ウェブカケ　新規登録</title>
   </head>
   <body>
+    {% if form.errors %}
+    <p>すでにその名前で登録している人がいます</p>
+    {% endif %}
     <form action="{% url 'webaccountbookapi:create' %}" method="post">
       {% csrf_token %}
-      {{form}}
+      {{form.username}}
       <input type="submit" value='登録'>
   </body>
 </html>
